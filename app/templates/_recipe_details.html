@@ -1,5 +1,5 @@
 <table>
     <tr valign="top">
-        <td>{{ recipe.creator.username }} cooked: <a href="{{ url_for('recipe', id=recipe.id) }}">{{ recipe.title }}</a></td>
+        <td>{{ recipe.creator.username }} cooked: <a href="{{ url_for('main.recipe', id=recipe.id) }}">{{ recipe.title }}</a></td>
     </tr>
 </table>

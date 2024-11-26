@@ -4,3 +4,7 @@
 /migrations/__pycache__
 /migrations/versions/__pycache__
 app.db
+.env
+app/errors/__pycache__
+app/main/__pycache__
+app/auth/__pycache__

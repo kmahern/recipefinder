@@ -2,23 +2,29 @@
 <html>
     <head>
       {% if title %}
-      <title>{{ title }} - Recipesharer</title>
+      <title>{{ title }} - Recipefinder</title>
       {% else %}
-      <title>Welcome to Recipesharer</title>
+      <title>Welcome to Recipefinder</title>
       {% endif %}
     </head>
     <body>
         <div>
-            Recipesharer:
-            <a href="{{ url_for('index') }}">Home</a>
+            Recipefinder:
+            <a href="{{ url_for('main.index') }}">Home</a>
             {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('auth.login') }}">Login</a>
             {% else %}
-            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+                {% if g.search_form %}
+                    <form method="get" action="{{ url_for('main.search') }}">
+                    <div>
+                        {{ g.search_form.q(size=20, placeholder=g.search_form.q.label.text) }}
+                    </div>
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
-        <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
