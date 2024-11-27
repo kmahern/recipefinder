@@ -17,4 +17,10 @@
     {% for recipe in recipes %}
         {% include '_recipe_details.html' %}
     {% endfor %}
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Newer recipes</a>
+    {% endif %}
+    {% if next_url %}
+        <a href="{{ next_url }}">Older recipes</a>
+    {% endif %}
 {% endblock %}

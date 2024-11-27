@@ -78,6 +78,7 @@ class User(UserMixin, db.Model):
     
 class Recipe(SearchableMixin, db.Model):
     __searchable__ = ['title']
+    __searchable__ = ['method']
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     title: so.Mapped[str] = so.mapped_column(sa.String(64))
     method: so.Mapped[Optional[str]] = so.mapped_column(sa.String(1024))

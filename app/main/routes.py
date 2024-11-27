@@ -13,9 +13,17 @@ from app.main.forms import SearchForm
 @bp.route('/user/<username>')
 @login_required
 def user(username):
+    page = request.args.get('page', 1, type=int)
     user = db.first_or_404(sa.select(User).where(User.username == username))
-    recipes = db.session.scalars(user.recipes.select()).all()
-    return render_template('user.html', user=user, recipes=recipes)
+    # recipes = db.session.scalars(user.recipes.select()).all()
+    query = user.recipes.select().order_by(Recipe.timestamp.desc())
+    recipes = db.paginate(query, page=page,
+                        per_page=current_app.config['RECIPES_PER_PAGE'], error_out=False)
+    next_url = url_for('main.index', page=recipes.next_num) \
+        if recipes.has_next else None
+    prev_url = url_for('main.index', page=recipes.prev_num) \
+        if recipes.has_prev else None
+    return render_template('user.html', user=user, recipes=recipes.items, next_url=next_url, prev_url=prev_url)
 
 @bp.before_app_request
 def before_request():
@@ -45,15 +53,22 @@ def edit_profile():
 @login_required
 def index():
     form = RecipeForm()
+    page = request.args.get('page', 1, type=int)
     if form.validate_on_submit():
         recipe = Recipe(title=form.title.data, creator=current_user)
         db.session.add(recipe)
         db.session.commit()
         flash('Your recipe has been added!')
         return redirect(url_for('main.recipe', id=recipe.id))
-    recipes = db.session.scalars(current_user.recipes.select()).all()
+    query = current_user.recipes.select().order_by(Recipe.timestamp.desc())
+    recipes = db.paginate(query, page=page,
+                        per_page=current_app.config['RECIPES_PER_PAGE'], error_out=False)
+    next_url = url_for('main.index', page=recipes.next_num) \
+        if recipes.has_next else None
+    prev_url = url_for('main.index', page=recipes.prev_num) \
+        if recipes.has_prev else None
     return render_template("index.html", title='Home Page', form=form,
-                           recipes=recipes)
+                           recipes=recipes.items, next_url=next_url, prev_url=prev_url)
 
 @bp.route('/recipe/<id>', methods=['GET', 'POST'])
 @login_required

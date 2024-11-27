@@ -9,4 +9,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
-    RECIPES_PER_PAGE = 25
+    RECIPES_PER_PAGE = 5
