@@ -1,32 +1,30 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
-import sqlalchemy as sa
-from app import db
-from app.models import User
+from flask_babel import _, lazy_gettext as _l
+from wtforms import StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Length, Regexp
 from flask import request
        
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
-    submit = SubmitField('Submit')
+    username = StringField(_l('Username'), validators=[DataRequired()])
+    about_me = TextAreaField(_l('About me'), validators=[Length(min=0, max=140)])
+    submit = SubmitField(_l('Submit'))
 
 class RecipeForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    title = StringField(_l('Title'), validators=[DataRequired()])
+    submit = SubmitField(_l('Submit'))
 
 class IngredientForm(FlaskForm):
-    description = StringField('Ingredient', validators=[DataRequired()])
-    quantity = StringField('Quantity', validators=[Regexp(regex='^[0-9]*$', message='Enter a valid quantity')])
-    unit = StringField('Unit')
-    submit = SubmitField('Add')
+    description = StringField(_l('Ingredient'), validators=[DataRequired()])
+    quantity = StringField(_l('Quantity'), validators=[Regexp(regex='^[0-9]*$', message='Enter a valid quantity')])
+    unit = StringField(_l('Unit'))
+    submit = SubmitField(_l('Add'))
 
 class RecipeMethodForm(FlaskForm):
-    method = TextAreaField('Method', validators=[Length(min=0, max=1024)])
-    submit = SubmitField('Submit')
+    method = TextAreaField(_l('Method'), validators=[Length(min=0, max=1024)])
+    submit = SubmitField(_l('Submit'))
 
 class SearchForm(FlaskForm):
-    q = StringField('Search', validators=[DataRequired()])
+    q = StringField(_l('Search'), validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
         if 'formdata' not in kwargs:

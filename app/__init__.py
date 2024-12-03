@@ -4,12 +4,16 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from elasticsearch import Elasticsearch
 from config import Config
-
+from flask_babel import Babel, lazy_gettext as _l
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
+babel = Babel()
+
+def get_locale():
+    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -17,6 +21,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    babel.init_app(app, locale_selector=get_locale)
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)

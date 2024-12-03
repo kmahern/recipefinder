@@ -1,6 +1,6 @@
 <table>
     <tr valign="top">
         <td> {{ ingredient.quantity | int if ingredient.quantity.is_integer() else ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.description }}</td>
-        <td><a href="{{ url_for('main.delete_ingredient', id=ingredient.id) }}">Delete</a></td>
+        <td><a href="{{ url_for('main.delete_ingredient', id=ingredient.id) }}">{{_('Delete')}}</a></td>
     </tr>
 </table>

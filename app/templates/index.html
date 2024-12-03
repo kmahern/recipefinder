@@ -2,7 +2,7 @@
 
 {% block content %}
         <h1>Hi, {{ current_user.username }}!</h1>
-        <h2>Add a new recipe</h1>
+        <h2>{{_('Add a new recipe')}}</h1>
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <p>
@@ -18,10 +18,10 @@
             {% include '_recipe_details.html' %}
         {% endfor %}
         {% if prev_url %}
-            <a href="{{ prev_url }}">Newer recipes</a>
+            <a href="{{ prev_url }}">{{_('Newer recipes')}}</a>
         {% endif %}
         {% if next_url %}
-            <a href="{{ next_url }}">Older recipes</a>
+            <a href="{{ next_url }}">{{_('Older recipes')}}</a>
         {% endif %}
     </body>
 {% endblock %}

@@ -10,3 +10,4 @@ class Config:
         'sqlite:///' + os.path.join(basedir, 'app.db')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     RECIPES_PER_PAGE = 5
+    LANGUAGES = ['en']
