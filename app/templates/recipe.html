@@ -2,14 +2,15 @@
 
 {% block content %}
     <h1>{{  recipe.title  }}</h1>
-    <h2>_('Ingredients')</h2>
+    <img src='/static/images/{{recipe.id}}' style="width: 256px">
+    <h2>{{_('Ingredients')}}</h2>
     {% for ingredient in ingredients %}
         {% include '_ingredient_details.html' %}
     {% endfor %}
     <form action="" method="post">
         {{ ingredient_form.hidden_tag() }}
         <p>
-            {{_('Ingredient:)}}
+            {{_('Ingredient:')}}
             {{ ingredient_form.description(size=32) }}
             {% for error in ingredient_form.description.errors %}
             <span style="color: red;">[{{ error }}]</span>
@@ -23,7 +24,7 @@
             {% endfor %}
         </p>
         <p>
-            {{_('Unit:')}
+            {{_('Unit:')}}
             {{ ingredient_form.unit(size=32) }}
             {% for error in ingredient_form.unit.errors %}
             <span style="color: red;">[{{ error }}]</span>
@@ -33,9 +34,12 @@
            {{ ingredient_form.submit() }}
         </p>
     </form>
-    <h2>{{_('Method')}}</h2>
-    <form action="" method="post">
+    <br>
+    <form action="" method="post" enctype="multipart/form-data">
         {{ recipe_method_form.hidden_tag() }}
+        <h2>{{_('Image')}}</h2>
+            <input type="file" name="image_file" accept="image/*">
+        <h2>{{_('Method')}}</h2>
         <p>
             {{_('Method:')}}<br>
             {{ recipe_method_form.method(cols=50, rows=10) }}<br>

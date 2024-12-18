@@ -9,3 +9,4 @@ app/errors/__pycache__
 app/main/__pycache__
 app/auth/__pycache__
 messages.pot
+/app/static/images/*

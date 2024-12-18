@@ -11,3 +11,6 @@ class Config:
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     RECIPES_PER_PAGE = 5
     LANGUAGES = ['en']
+    MAX_CONTENT_LENGTH = 1024 * 1024
+    UPLOAD_EXTENSIONS = ['.jpg', '.png', '.gif', '.webp']
+    UPLOAD_PATH = 'app/static/images'

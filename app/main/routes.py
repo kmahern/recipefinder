@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
-from flask import current_app, flash, redirect, render_template, request, url_for, g
+import os
+from flask import abort, current_app, flash, redirect, render_template, request, url_for, g
 from flask_babel import _, get_locale
 from app.main.forms import EditProfileForm, IngredientForm, RecipeMethodForm, RecipeForm
 from flask_login import current_user, login_required
@@ -82,6 +83,12 @@ def recipe(id):
         db.session.commit()
         return redirect(url_for('main.recipe', id=recipe.id))
     if recipe_method_form.validate_on_submit():
+        uploaded_file = request.files['image_file']
+        if uploaded_file.filename != '':
+            file_ext = os.path.splitext(uploaded_file.filename)[1]
+            if file_ext not in current_app.config['UPLOAD_EXTENSIONS']:
+                abort(400)
+            uploaded_file.save(os.path.join(current_app.config['UPLOAD_PATH'], str(recipe.id)))
         recipe.method = recipe_method_form.method.data
         db.session.commit()
         return redirect(url_for('main.index'))
