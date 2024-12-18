@@ -60,7 +60,7 @@ def index():
         db.session.add(recipe)
         db.session.commit()
         flash(_('Your recipe has been added!'))
-        return redirect(url_for('main.recipe', id=recipe.id))
+        return redirect(url_for('main.recipe_ingredients', id=recipe.id))
     query = current_user.recipes.select().order_by(Recipe.timestamp.desc())
     recipes = db.paginate(query, page=page,
                         per_page=current_app.config['RECIPES_PER_PAGE'], error_out=False)
@@ -71,17 +71,24 @@ def index():
     return render_template("index.html", title=_('Home Page'), form=form,
                            recipes=recipes.items, next_url=next_url, prev_url=prev_url)
 
-@bp.route('/recipe/<id>', methods=['GET', 'POST'])
+@bp.route('/recipe_ingredients/<id>', methods=['GET', 'POST'])
 @login_required
-def recipe(id):
+def recipe_ingredients(id):
     ingredient_form = IngredientForm()
-    recipe_method_form = RecipeMethodForm()
     recipe = db.first_or_404(sa.select(Recipe).where(Recipe.id == id))
     if ingredient_form.validate_on_submit():
         ingredient = Ingredient(description=ingredient_form.description.data, quantity=ingredient_form.quantity.data, unit=ingredient_form.unit.data, recipe=recipe)
         db.session.add(ingredient)
         db.session.commit()
-        return redirect(url_for('main.recipe', id=recipe.id))
+        return redirect(url_for('main.recipe_ingredients', id=recipe.id))
+    ingredients = db.session.scalars(recipe.ingredients.select()).all()
+    return render_template('ingredients.html', recipe=recipe, ingredients=ingredients, ingredient_form=ingredient_form)
+
+@bp.route('/recipe/<id>', methods=['GET', 'POST'])
+@login_required
+def recipe(id):
+    recipe_method_form = RecipeMethodForm()
+    recipe = db.first_or_404(sa.select(Recipe).where(Recipe.id == id))
     if recipe_method_form.validate_on_submit():
         uploaded_file = request.files['image_file']
         if uploaded_file.filename != '':
@@ -91,11 +98,11 @@ def recipe(id):
             uploaded_file.save(os.path.join(current_app.config['UPLOAD_PATH'], str(recipe.id)))
         recipe.method = recipe_method_form.method.data
         db.session.commit()
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.recipe', id=recipe.id))
     elif request.method == 'GET':
         recipe_method_form.method.data = recipe.method
     ingredients = db.session.scalars(recipe.ingredients.select()).all()
-    return render_template('recipe.html', recipe=recipe, ingredients=ingredients, ingredient_form=ingredient_form, recipe_method_form=recipe_method_form)
+    return render_template('recipe.html', recipe=recipe, ingredients=ingredients, recipe_method_form=recipe_method_form)
 
 @bp.route('/delete_ingredient/<id>', methods=['GET'])
 @login_required

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{  recipe.title  }}</h1>
+    <h2>{{_('Ingredients')}}</h2>
+    {% for ingredient in ingredients %}
+        {% include '_edit_ingredient_details.html' %}
+    {% endfor %}
+    <form action="" method="post">
+        {{ ingredient_form.hidden_tag() }}
+        <p>
+            {{_('Ingredient:')}}
+            {{ ingredient_form.description(size=32) }}
+            {% for error in ingredient_form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{_('Quantity:')}}
+            {{ ingredient_form.quantity(size=32) }}
+            {% for error in ingredient_form.quantity.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{_('Unit:')}}
+            {{ ingredient_form.unit(size=32) }}
+            {% for error in ingredient_form.unit.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+           {{ ingredient_form.submit() }}
+        </p>
+        <p><a href="{{ url_for('main.recipe', id=recipe.id) }}">{{_('Add recipe method')}}</a></p>
+    </form>
+{% endblock %}
