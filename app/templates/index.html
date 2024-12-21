@@ -1,19 +1,10 @@
 {% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
 
 {% block content %}
         <h1>Hi, {{ current_user.username }}!</h1>
         <h2>{{_('Add a new recipe')}}</h1>
-        <form action="" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.title.label }}<br>
-                {{ form.title(size=32) }}<br>
-                {% for error in form.title.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>{{ form.submit() }}</p>
-        </form>
+        {{ wtf.quick_form(form) }}
         {% for recipe in recipes %}
             {% include '_recipe_details.html' %}
         {% endfor %}

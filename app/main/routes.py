@@ -61,7 +61,7 @@ def index():
         db.session.commit()
         flash(_('Your recipe has been added!'))
         return redirect(url_for('main.recipe_ingredients', id=recipe.id))
-    query = current_user.recipes.select().order_by(Recipe.timestamp.desc())
+    query = Recipe.query.order_by(Recipe.timestamp.desc())
     recipes = db.paginate(query, page=page,
                         per_page=current_app.config['RECIPES_PER_PAGE'], error_out=False)
     next_url = url_for('main.index', page=recipes.next_num) \
