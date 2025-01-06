@@ -8,4 +8,5 @@
         {% include '_edit_ingredient_details.html' %}
     {% endfor %}
     {{ wtf.quick_form(ingredient_form) }}
+    <p><a href="{{ url_for('main.recipe', id=recipe.id) }}">{{_('Add recipe method')}}</a></p>
 {% endblock %}

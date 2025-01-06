@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from elasticsearch import Elasticsearch
 from config import Config
-from flask_babel import Babel, lazy_gettext as _l
+from flask_babel import Babel
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -36,5 +36,4 @@ def create_app(config_class=Config):
         if app.config['ELASTICSEARCH_URL'] else None
     return app
 
-
-from app import models
+from app import models # noqa

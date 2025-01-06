@@ -8,7 +8,6 @@ import sqlalchemy as sa
 from app import db
 from app.models import Ingredient, Recipe, User
 from app.main import bp
-from flask import g
 from app.main.forms import SearchForm
 
 @bp.route('/user/<username>')
